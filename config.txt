@@ -1,0 +1,27 @@
+[Players]
+divine = Alive
+sdadasdas = Alive
+krazy kat = Alive
+lucky artist = Alive
+orion = Alive
+yns = Alive
+magicmagininja = Alive
+midman01 = Alive
+friend = Alive
+
+[Thread]
+lastpost = 35
+lastpage = http://nadota.com/showthread.php?42232-ONGOING-Ironstove-s-Closed-Mafia/page2
+
+[Host]
+host = IRONSTOVE.
+
+[Votes]
+friend = DIVINE
+divine = MIDMAN01
+midman01 = DIVINE
+lucky artist = ORION
+yns = MIDMAN01
+magicmagininja = MIDMAN01
+sdadasdas = ORION
+
