@@ -1,27 +1,31 @@
 [Players]
-divine = Alive
-sdadasdas = Alive
-krazy kat = Alive
 lucky artist = Alive
-orion = Alive
+notjones = Alive
+slithereen = Alive
+divine = Alive
+nmagane = Alive
+krazy kat = Alive
+nihil. = Alive
+iamafuckingretard = Alive
+sdadasdas = Alive
+scsf = Alive
+cactus = Alive
 yns = Alive
-magicmagininja = Alive
-midman01 = Alive
-friend = Alive
+supa = Alive
 
 [Thread]
-lastpost = 35
-lastpage = http://nadota.com/showthread.php?42232-ONGOING-Ironstove-s-Closed-Mafia/page2
+lastpost = 63
+lastpage = http://nadota.com/showthread.php?42717-ONGOING-Black-Box-Mafia-2/page4
 
 [Host]
 host = IRONSTOVE.
 
 [Votes]
-friend = DIVINE
-divine = MIDMAN01
-midman01 = DIVINE
-lucky artist = ORION
-yns = MIDMAN01
-magicmagininja = MIDMAN01
-sdadasdas = ORION
+nmagane = NOTJONES
+slithereen = YNS
+iamafuckingretard = LUCKY ARTIST
+lucky artist = YNS
+supa = YNS
+cactus = YNS
+krazy kat = SCSF
 

@@ -1,4 +1,6 @@
 ########NADOTA MAFIA BOT. Ver 0.1a#############
+##Version 0.2 4/2/2018 - Fixed a few bugs
+#found a bug w/ the bot where it fails operation if the size of thread is less than 4 pages because the 'lastpage' tag doesn't appear. need to fix it. lol.
 
 from selenium import webdriver
 import re
@@ -74,7 +76,9 @@ def EndDay(lynched):
 	
 	lynches.clear()
 	InitVotes()
-
+	cfgfile.truncate(0)
+	config.write(cfgfile)
+	cfgfile.close()
 	return True
 	
 def ShowVotes():
@@ -124,6 +128,7 @@ def AddLynch(lynch, username):
 def Unlynch(username):
 	if username in lynches:
 		print("Removing lynch vote for: ", username)
+		UnwriteCfg('Votes',username)
 		prevlynch = lynches[username]
 		lynchref[prevlynch].remove(username)
 		del lynches[username]
@@ -322,22 +327,31 @@ if checkgame == 0:
 	config.add_section('Votes')
 	config.add_section('Thread')
 	config.add_section('Host')
+	#grab host name
 	op=driver.find_element_by_class_name("userinfo")
 	op_name=op.find_element_by_tag_name("Strong").text.upper()
+	#grab host initial post
 	config.set('Host','Host', op_name)
 	op_rpost=driver.find_element_by_class_name("content")
+	#raw_op_rpost = op_rpost.get_attribute('innerHTML').replace(" ","").replace(u"\u200b","").upper()
+	#playerlist=op_rpost.find_element_by_tag_name("b") #replacing this out because I found a bug where if the first text is not playerlist, the bot shits itself. 
 	
-	playerlist=op_rpost.find_element_by_tag_name("b")
-	players=playerlist.get_attribute('innerHTML').replace("\n","").split("<br>")
-	for player in players:
-		plist[player.upper()]=1
-		##print ("checking deadref", player)
-		if player not in deadref and "PLAYERLIST" not in player and player != "":
-			##print("Congrats, not dead")
-			lynchref[player.upper()]=[]
-			WriteCfg('Players',player,'Alive')
-		else:
-			print("The dead (", player ,") doesn't speak...")
+	bolds=op_rpost.find_elements_by_tag_name("b")
+	#if "<B>PLAYERLIST" in raw_op_post:
+	for bold in bolds:
+		ubold = bold.text.upper()
+		if "PLAYERLIST" in ubold or "PLAYER LIST" in ubold:
+			players=bold.get_attribute('innerHTML').replace("\n","").split("<br>")
+			for player in players:
+				raw_player_text = player.replace(" ","").replace(u"\u200b","").upper()
+				##print ("checking deadref", player)
+				if player not in deadref and "PLAYERLIST" not in raw_player_text and player != "":
+					plist[player.upper()]=1
+					print("Adding new player to the pool:", player)
+					lynchref[player.upper()]=[]
+					WriteCfg('Players',player,'Alive')
+				else:
+					print("Invalid Entry: (", player ,") Ignoring and moving on...")
 			
 	lynches.clear()
 	InitVotes()
@@ -371,7 +385,7 @@ nextlink=1
 #Basically infinite loop. 2160 iterations = 36 hours. Bot seems to crash after about 2-3 hours, so will try to do a 100 hour test at some point.
 count = 0
 
-while count < 2160:
+while count < 5000:
 	print("Loop iteration:", count)
 	while nextlink != 0:		
 		try:
@@ -405,9 +419,6 @@ while count < 2160:
 	###write the file###
 	cfgfile.truncate(0)
 	config.write(cfgfile)
-	#cfgfile.truncate() #for some reason this truncate isn't working... File is appending when using fsync and flush. 
-	#cfgfile.flush()
-	#os.fsync(cfgfile.fileno())
 	cfgfile.close()
 	cfgfile = open(os.path.abspath(os.path.join('config.txt')),'r+')
 
@@ -425,6 +436,9 @@ while count < 2160:
 	else:
 		print("No votes requested. Voteflag is:", voteflag)
 	print("Pause for 45s")
+	
+	cfgfile.close()
+	cfgfile = open(os.path.abspath(os.path.join('config.txt')),'r+')
 	time.sleep(45)
 	try:
 		driver.get(lastpage)
